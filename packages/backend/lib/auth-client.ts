@@ -1,7 +1,16 @@
 import { convexClient } from "@convex-dev/better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
-import { organizationClient, usernameClient } from "better-auth/client/plugins"
+import {
+  adminClient,
+  organizationClient,
+  usernameClient,
+} from "better-auth/client/plugins";
 
 export const authClient = createAuthClient({
-  plugins: [convexClient(), organizationClient(), usernameClient()],
+  plugins: [
+    convexClient(),
+    organizationClient(),
+    usernameClient(),
+    adminClient(),
+  ],
 });

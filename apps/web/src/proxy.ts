@@ -1,18 +1,27 @@
-import { isAuthenticated } from '@repo/backend/lib/auth-server';
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
- 
-// This function can be marked `async` if using `await` inside
-export default async function proxy(request: NextRequest) {
-    const hasToken = await isAuthenticated();
-    
-    if (!hasToken) {
-        return NextResponse.redirect(new URL('/', request.url))
-    }
+import { isAuthenticated } from "@repo/backend/lib/auth-server";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-    return NextResponse.next();
+const UNAUTHENTICATED_PATHS = ["/sign-up", "/sign-in"];
+
+export default async function proxy(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+  const hasToken = await isAuthenticated();
+
+  if (
+    hasToken &&
+    UNAUTHENTICATED_PATHS.some((path) => pathname.startsWith(path))
+  ) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+
+  if (!hasToken) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  return NextResponse.next();
 }
- 
+
 export const config = {
-  matcher: '/dashboard',
-}
+  matcher: ["/dashboard", "/sign-up", "/sign-in"],
+};
