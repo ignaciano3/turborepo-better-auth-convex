@@ -35,6 +35,7 @@ export default function SignInPage() {
         <input
           type="email"
           name="email"
+          autoComplete="email"
           placeholder="Email"
           className="border p-2 rounded"
           required
@@ -42,6 +43,7 @@ export default function SignInPage() {
         <input
           type="password"
           name="password"
+          autoComplete="current-password"
           placeholder="Password"
           className="border p-2 rounded"
           required

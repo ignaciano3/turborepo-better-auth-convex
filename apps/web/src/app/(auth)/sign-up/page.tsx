@@ -1,7 +1,8 @@
 "use client";
 
 import { authClient } from "@repo/backend/lib/auth-client";
-import Title from "../../../components/Title";
+import Title from "@/components/Title";
+import { isBetterAuthError } from "@/models/BetterAuthError";
 
 export default function SignUpPage() {
   const signUpWithEmailAndPassword = async (
@@ -10,13 +11,22 @@ export default function SignUpPage() {
     name: string,
   ) => {
     try {
-      await authClient.signUp.email({
+      const { data, error } = await authClient.signUp.email({
         email,
         password,
         name,
         callbackURL: "/dashboard",
       });
+      if (error) {
+        throw error;
+      }
+      console.log("Sign up successful:", data);
     } catch (error) {
+      if (isBetterAuthError(error)) {
+        alert(`Error signing up: ${error.message}`);
+      } else {
+        alert("An unexpected error occurred during sign up.");
+      }
       console.error("Error signing up:", error);
     }
   };
@@ -46,6 +56,7 @@ export default function SignUpPage() {
         <input
           type="email"
           name="email"
+          autoComplete="email"
           placeholder="Email"
           className="border p-2 rounded"
           required
@@ -63,7 +74,6 @@ export default function SignUpPage() {
           name="confirmPassword"
           placeholder="Confirm Password"
           className="border p-2 rounded"
-          autoComplete="new-password"
           required
         />
         <input
