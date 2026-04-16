@@ -7,7 +7,7 @@ import { components } from "../_generated/api";
 import type { DataModel } from "../_generated/dataModel";
 import authConfig from "../auth.config";
 import schema from "./schema";
-import { organization } from "better-auth/plugins"
+import { organization, username,  } from "better-auth/plugins"
 
 // Better Auth Component
 export const authComponent = createClient<DataModel, typeof schema>(
@@ -28,7 +28,7 @@ export const createAuthOptions = (ctx: GenericCtx<DataModel>) => {
     emailAndPassword: {
       enabled: true,
     },
-    plugins: [convex({ authConfig }), organization()],
+    plugins: [convex({ authConfig }), organization(), username()],
   } satisfies BetterAuthOptions;
 };
 
