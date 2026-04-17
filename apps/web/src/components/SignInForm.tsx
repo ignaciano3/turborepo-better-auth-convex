@@ -11,6 +11,23 @@ export const SignInForm = () => {
     password: string,
   ) => {
     try {
+      if (username.includes("@")) {
+        await authClient.signIn.email({
+          email: username,
+          password,
+          fetchOptions: {
+            onSuccess: () => {
+              router.replace("/dashboard");
+            },
+            onError: ({ error }) => {
+              console.error("Error signing in:", error.message);
+              alert(`Error signing in: ${error.message}`);
+            },
+          },
+        });
+        return;
+      }
+      
       await authClient.signIn.username({
         username,
         password,
@@ -18,10 +35,15 @@ export const SignInForm = () => {
           onSuccess: () => {
             router.replace("/dashboard");
           },
+          onError: ({ error }) => {
+            console.error("Error signing in:", error.message);
+            alert(`Error signing in: ${error.message}`);
+          },
         },
       });
     } catch (error) {
       console.error("Error signing in:", error);
+      alert("An unexpected error occurred during sign in.");
     }
   };
 

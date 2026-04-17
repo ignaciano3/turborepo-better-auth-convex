@@ -4,7 +4,7 @@ import { useQuery } from "convex/react";
 import { api } from "@repo/backend/api";
 import { SignOutButton } from "@/components/SignOutButton";
 
-const Page = () => {
+export default function DashboardPage() {
   const user = useQuery(api.auth.getCurrentUser);
 
   console.log("User:", user);
@@ -23,6 +23,4 @@ const Page = () => {
       <SignOutButton />
     </div>
   );
-};
-
-export default Page;
+}

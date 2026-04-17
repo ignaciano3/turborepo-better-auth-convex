@@ -1,6 +1,5 @@
 "use client";
 
-import { isBetterAuthError } from "@/models/BetterAuthError";
 import { authClient } from "@repo/backend/lib/auth-client";
 import { useRouter } from "next/navigation";
 
@@ -14,7 +13,7 @@ export function SignUpForm() {
     const router = useRouter();
 
     try {
-      const { data, error } = await authClient.signUp.email({
+      await authClient.signUp.email({
         email,
         password,
         name,
@@ -23,18 +22,14 @@ export function SignUpForm() {
           onSuccess: () => {
             router.replace("/dashboard");
           },
+          onError: ({ error }) => {
+            console.error("Error signing up:", error.message);
+            alert(`Error signing up: ${error.message}`);
+          },
         },
       });
-      if (error) {
-        throw error;
-      }
-      console.log("Sign up successful:", data);
     } catch (error) {
-      if (isBetterAuthError(error)) {
-        alert(`Error signing up: ${error.message}`);
-      } else {
-        alert("An unexpected error occurred during sign up.");
-      }
+      alert("An unexpected error occurred during sign up.");
       console.error("Error signing up:", error);
     }
   };
