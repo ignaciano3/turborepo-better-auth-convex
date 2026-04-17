@@ -4,14 +4,14 @@ import { authClient } from "@repo/backend/lib/auth-client";
 import { useRouter } from "next/navigation";
 
 export function SignUpForm() {
+  const router = useRouter();
+  
   const signUpWithEmailAndPassword = async (
     email: string,
     password: string,
     name: string,
     username: string,
   ) => {
-    const router = useRouter();
-
     try {
       await authClient.signUp.email({
         email,
@@ -37,7 +37,7 @@ export function SignUpForm() {
   return (
     <form
       className="flex flex-col gap-4"
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const password = formData.get("password") as string;
@@ -52,7 +52,7 @@ export function SignUpForm() {
         const name = formData.get("name") as string;
         const username = formData.get("username") as string;
 
-        signUpWithEmailAndPassword(email, password, name, username);
+        await signUpWithEmailAndPassword(email, password, name, username);
       }}
     >
       <input

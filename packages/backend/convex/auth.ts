@@ -3,6 +3,7 @@ import { query } from "./_generated/server";
 export const getCurrentUser = query({
   args: {},
   handler: async (ctx) => {
-    return await ctx.auth.getUserIdentity();
+    const identity = await ctx.auth.getUserIdentity();
+    return identity;
   },
 });
