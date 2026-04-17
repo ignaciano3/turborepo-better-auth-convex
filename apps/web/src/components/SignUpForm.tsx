@@ -2,6 +2,7 @@
 
 import { isBetterAuthError } from "@/models/BetterAuthError";
 import { authClient } from "@repo/backend/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export function SignUpForm() {
   const signUpWithEmailAndPassword = async (
@@ -10,13 +11,19 @@ export function SignUpForm() {
     name: string,
     username: string,
   ) => {
+    const router = useRouter();
+
     try {
       const { data, error } = await authClient.signUp.email({
         email,
         password,
         name,
         username,
-        callbackURL: "/dashboard",
+        fetchOptions: {
+          onSuccess: () => {
+            router.replace("/dashboard");
+          },
+        },
       });
       if (error) {
         throw error;

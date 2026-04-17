@@ -15,7 +15,7 @@ export default async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
-  if (!hasToken) {
+  if (!hasToken && !UNAUTHENTICATED_PATHS.some((path) => pathname.startsWith(path))) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
