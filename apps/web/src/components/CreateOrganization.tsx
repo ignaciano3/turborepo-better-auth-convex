@@ -31,7 +31,9 @@ export function CreateOrganization() {
 
   return (
     <div className="my-4 p-6 border">
-      <h2 className="text-xl font-bold mb-4">Create New Organization (Desde BetterAuth)</h2>
+      <h2 className="text-xl font-bold mb-4">
+        Create New Organization (Desde BetterAuth)
+      </h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="name" className="block font-medium text-gray-700">
           Organization Name:

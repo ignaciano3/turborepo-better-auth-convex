@@ -1,8 +1,6 @@
 "use client";
 
-import { api } from "@repo/backend/api";
 import { authClient } from "@repo/backend/lib/auth-client";
-import { useQuery } from "convex/react";
 
 export function ListOrganizations() {
   const { data: organizations } = authClient.useListOrganizations();

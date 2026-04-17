@@ -3,13 +3,18 @@ import { v } from "convex/values";
 
 export const createMessage = mutation({
   args: {
-    author: v.id("users"),
     body: v.string(),
     chat: v.id("chat"),
   },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    
+    if (!identity) throw new Error("Unauthorized");
+
+    const userId = identity.subject;
+
     await ctx.db.insert("messages", {
-      author: args.author,
+      userId: userId,
       body: args.body,
       chat: args.chat,
     });
